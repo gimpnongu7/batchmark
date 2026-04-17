@@ -1,0 +1,20 @@
+# batchmark sample configuration
+# Run with: batchmark examples/sample_config.yaml
+
+timeout: 15  # global timeout in seconds (optional)
+
+commands:
+  - label: echo hello
+    cmd: echo hello
+
+  - label: list files
+    cmd: ls -lh .
+
+  - label: python version
+    cmd: python --version
+
+  - label: disk usage
+    cmd: du -sh .
+
+  - label: sleep 0.1
+    cmd: sleep 0.1
