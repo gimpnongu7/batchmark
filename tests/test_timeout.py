@@ -66,3 +66,13 @@ def test_effective_timeout_clamped_by_budget():
 
 def test_effective_timeout_not_clamped():
     assert effective_timeout(5.0, 20.0) == 5.0
+
+
+def test_effective_timeout_budget_exactly_equal():
+    """When budget remaining equals the per-command timeout, result should equal both."""
+    assert effective_timeout(7.0, 7.0) == 7.0
+
+
+def test_budget_remaining_zero_elapsed():
+    """No time elapsed means full budget remains."""
+    assert budget_remaining(45.0, 0.0) == 45.0
