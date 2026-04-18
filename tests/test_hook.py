@@ -29,6 +29,12 @@ def test_run_hook_timeout():
     assert "timeout" in hr.stderr
 
 
+def test_run_hook_captures_stderr():
+    hr = run_hook("echo error_msg >&2")
+    assert hr.success
+    assert "error_msg" in hr.stderr
+
+
 def test_run_hooks_all_success():
     results = run_hooks(["echo a", "echo b"])
     assert len(results) == 2
