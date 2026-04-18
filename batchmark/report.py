@@ -1,58 +1,44 @@
+"""Formatting utilities for benchmark results and stats."""
 import json
-from typing import Any
+from typing import List
 from batchmark.runner import CommandResult
+from batchmark.stats import compute_stats, stats_to_dict
 
 
-def results_to_dict(results: list[CommandResult]) -> dict[str, Any]:
-    total = len(results)
-    passed = sum(1 for r in results if r.success)
-    durations = [r.duration_seconds for r in results]
-
-    return {
-        "summary": {
-            "total": total,
-            "passed": passed,
-            "failed": total - passed,
-            "total_duration_seconds": round(sum(durations), 6),
-            "avg_duration_seconds": round(sum(durations) / total, 6) if total else 0,
-            "min_duration_seconds": round(min(durations), 6) if durations else 0,
-            "max_duration_seconds": round(max(durations), 6) if durations else 0,
-        },
-        "commands": [
-            {
-                "command": r.command,
-                "exit_code": r.exit_code,
-                "success": r.success,
-                "duration_seconds": r.duration_seconds,
-                "stdout": r.stdout.strip(),
-                "stderr": r.stderr.strip(),
-            }
-            for r in results
-        ],
-    }
+def results_to_dict(results: List[CommandResult]) -> dict:
+    entries = [
+        {
+            "command": r.command,
+            "exit_code": r.exit_code,
+            "duration": round(r.duration, 4),
+            "timed_out": r.timed_out,
+        }
+        for r in results
+    ]
+    stats = stats_to_dict(compute_stats(results))
+    return {"results": entries, "stats": stats}
 
 
-def format_json(results: list[CommandResult]) -> str:
+def format_json(results: List[CommandResult]) -> str:
     return json.dumps(results_to_dict(results), indent=2)
 
 
-def format_table(results: list[CommandResult]) -> str:
-    lines = [
-        f"{'COMMAND':<50} {'STATUS':<8} {'DURATION':>12}",
-        "-" * 72,
-    ]
+def format_table(results: List[CommandResult]) -> str:
+    header = f"{'COMMAND':<40} {'EXIT':>6} {'DURATION':>10} {'TIMEOUT':>8}"
+    separator = "-" * len(header)
+    rows = [header, separator]
     for r in results:
-        status = "OK" if r.success else "FAIL"
-        cmd_display = r.command if len(r.command) <= 48 else r.command[:45] + "..."
-        lines.append(f"{cmd_display:<50} {status:<8} {r.duration_seconds:>10.4f}s")
+        rows.append(
+            f"{r.command:<40} {r.exit_code:>6} {r.duration:>10.4f} {str(r.timed_out):>8}"
+        )
 
-    data = results_to_dict(results)["summary"]
-    lines += [
-        "-" * 72,
-        f"Total: {data['total']}  Passed: {data['passed']}  Failed: {data['failed']}",
-        f"Duration — total: {data['total_duration_seconds']}s  "
-        f"avg: {data['avg_duration_seconds']}s  "
-        f"min: {data['min_duration_seconds']}s  "
-        f"max: {data['max_duration_seconds']}s",
-    ]
-    return "\n".join(lines)
+    stats = compute_stats(results)
+    rows.append(separator)
+    rows.append(f"Total: {stats.count}  Success: {stats.success_count}  "
+                f"Failure: {stats.failure_count}  Timeout: {stats.timeout_count}")
+    rows.append(f"Duration — min: {stats.min_duration:.4f}s  "
+                f"mean: {stats.mean_duration:.4f}s  "
+                f"median: {stats.median_duration:.4f}s  "
+                f"p95: {stats.p95_duration:.4f}s  "
+                f"max: {stats.max_duration:.4f}s")
+    return "\n".join(rows)
