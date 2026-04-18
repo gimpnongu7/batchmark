@@ -48,6 +48,7 @@ def compute_stats(results: List[CommandResult]) -> BatchStats:
 
 
 def stats_to_dict(stats: BatchStats) -> dict:
+    """Convert a BatchStats instance to a plain dictionary."""
     return {
         "count": stats.count,
         "success_count": stats.success_count,
@@ -59,3 +60,17 @@ def stats_to_dict(stats: BatchStats) -> dict:
         "median_duration": stats.median_duration,
         "p95_duration": stats.p95_duration,
     }
+
+
+def format_stats_summary(stats: BatchStats) -> str:
+    """Return a human-readable summary string of the batch stats."""
+    success_rate = (stats.success_count / stats.count * 100) if stats.count else 0
+    return (
+        f"Runs: {stats.count} | "
+        f"Success: {stats.success_count} ({success_rate:.1f}%) | "
+        f"Failures: {stats.failure_count} | "
+        f"Timeouts: {stats.timeout_count} | "
+        f"Duration (min/mean/median/p95/max): "
+        f"{stats.min_duration:.4f}s / {stats.mean_duration:.4f}s / "
+        f"{stats.median_duration:.4f}s / {stats.p95_duration:.4f}s / {stats.max_duration:.4f}s"
+    )
