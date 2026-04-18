@@ -1,0 +1,18 @@
+# Sample batchmark config with redaction enabled
+
+commands:
+  - echo hello
+  - echo password=supersecret
+  - curl -H "Authorization: token=mytoken123" https://example.com
+
+timeout: 10
+
+redact:
+  placeholder: "***"
+  patterns:
+    - 'password=\S+'
+    - 'token=[^\s]+'
+  env_keys:
+    - AWS_SECRET_ACCESS_KEY
+    - GITHUB_TOKEN
+    - API_KEY
