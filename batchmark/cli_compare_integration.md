@@ -7,6 +7,7 @@ The `compare` feature allows users to diff two benchmark runs side by side.
 ```bash
 batchmark compare run_a.json run_b.json
 batchmark compare run_a.json run_b.json --output diff.md
+batchmark compare run_a.json run_b.json --format json
 ```
 
 ## How It Works
@@ -25,6 +26,12 @@ echo hello                               0.100s     0.080s    -0.020s    -20.0%
 sleep 1                                  1.000s     1.200s    +0.200s    +20.0%
 ls /tmp                                  0.050s        N/A        N/A       N/A
 ```
+
+## Error Handling
+
+- If either file does not exist, the CLI exits with a clear message and a non-zero exit code.
+- If a file is not valid JSON or is missing the expected `results` key, an error is shown indicating which file is malformed.
+- If both files contain no overlapping commands, a warning is printed but the table is still rendered.
 
 ## Integration Points
 
