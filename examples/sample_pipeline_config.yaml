@@ -1,0 +1,29 @@
+# sample_pipeline_config.yaml — example pipeline configuration for batchmark
+#
+# Run with:
+#   batchmark --pipeline examples/sample_pipeline_config.yaml
+
+stages:
+  - name: lint
+    commands:
+      - "echo 'running lint'"
+      - "echo 'lint passed'"
+    stop_on_failure: true
+
+  - name: build
+    commands:
+      - "echo 'compiling sources'"
+    timeout: 60.0
+    stop_on_failure: true
+
+  - name: test
+    commands:
+      - "echo 'running unit tests'"
+      - "echo 'running integration tests'"
+    timeout: 120.0
+    stop_on_failure: false
+
+  - name: deploy
+    commands:
+      - "echo 'deploying artifact'"
+    stop_on_failure: false
