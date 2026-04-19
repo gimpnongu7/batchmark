@@ -53,6 +53,11 @@ def test_sort_invalid_key(sample_results):
         sort_results(sample_results, key="nonexistent")
 
 
+def test_sort_empty_list():
+    """Sorting an empty list should return an empty list without errors."""
+    assert sort_results([], key="duration") == []
+
+
 def test_top_n_returns_correct_count(sample_results):
     result = top_n(sample_results, n=2)
     assert len(result) == 2
@@ -61,6 +66,12 @@ def test_top_n_returns_correct_count(sample_results):
 def test_top_n_slowest_first(sample_results):
     result = top_n(sample_results, n=2, key="duration", reverse=True)
     assert result[0].duration == 3.0
+
+
+def test_top_n_larger_than_list(sample_results):
+    """Requesting more results than available should return all results."""
+    result = top_n(sample_results, n=10)
+    assert len(result) == len(sample_results)
 
 
 def test_top_n_invalid_n(sample_results):
