@@ -24,7 +24,9 @@ def summarize(results: List[CommandResult]) -> RunSummary:
     failed = [r for r in results if r.status == "failure"]
     timed_out = [r for r in results if r.status == "timeout"]
 
-    sorted_by_dur = sorted(results, key=lambda r: r.duration)
+    # Only consider successful runs for fastest/slowest to avoid skewed results
+    completed = [r for r in results if r.status != "timeout"] or results
+    sorted_by_dur = sorted(completed, key=lambda r: r.duration)
     fastest = sorted_by_dur[0].command
     slowest = sorted_by_dur[-1].command
 
