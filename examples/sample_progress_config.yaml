@@ -1,0 +1,13 @@
+commands:
+  - echo hello
+  - sleep 0.1
+  - echo world
+  - ls /tmp
+  - date
+
+progress:
+  enabled: true
+  bar_width: 40
+  show_elapsed: true
+
+timeout: 10
