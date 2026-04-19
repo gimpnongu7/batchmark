@@ -1,0 +1,15 @@
+commands:
+  - echo fast
+  - sleep 0.1 && echo medium
+  - sleep 0.5 && echo slow
+  - false
+
+split:
+  default_group: other
+  rules:
+    - name: failures
+      status: failure
+    - name: slow
+      min_duration: 0.4
+    - name: fast
+      max_duration: 0.05
