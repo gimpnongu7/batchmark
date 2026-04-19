@@ -41,6 +41,9 @@ batchmark run config.yaml --label-group team
 
 # Show labels in table
 batchmark run config.yaml --show-labels
+
+# Combine: filter and group
+batchmark run config.yaml --label-filter env=prod --label-group team
 ```
 
 ## Programmatic Usage
@@ -52,3 +55,9 @@ labeled = label_results(results, label_map)
 prod_results = filter_by_label(labeled, "env", "prod")
 groups = group_by_label(labeled, "team")
 ```
+
+## Notes
+
+- Commands not listed under `labels` in the config will have an empty label map (`{}`).
+- `--label-filter` can be specified multiple times to apply multiple filters (AND logic).
+- Label keys and values are case-sensitive.
