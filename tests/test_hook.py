@@ -35,6 +35,12 @@ def test_run_hook_captures_stderr():
     assert "error_msg" in hr.stderr
 
 
+def test_run_hook_empty_command():
+    """An empty command string should return a failed HookResult."""
+    hr = run_hook("")
+    assert not hr.success
+
+
 def test_run_hooks_all_success():
     results = run_hooks(["echo a", "echo b"])
     assert len(results) == 2
