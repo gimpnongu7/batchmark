@@ -1,0 +1,26 @@
+# batchmark sample config with labels
+commands:
+  - echo hello
+  - echo world
+  - sleep 0.1
+  - ls /tmp
+
+timeout: 10
+
+labels:
+  "echo hello":
+    env: prod
+    team: infra
+    tier: fast
+  "echo world":
+    env: prod
+    team: platform
+    tier: fast
+  "sleep 0.1":
+    env: staging
+    team: infra
+    tier: slow
+  "ls /tmp":
+    env: prod
+    team: platform
+    tier: fast
