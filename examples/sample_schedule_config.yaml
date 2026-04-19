@@ -1,0 +1,13 @@
+# batchmark schedule config example
+global_delay: 0.1
+max_concurrency: 1
+entries:
+  - command: "echo hello"
+    delay: 0.0
+    tags: ["greet"]
+  - command: "sleep 0.05 && echo done"
+    delay: 0.05
+    tags: ["slow"]
+  - command: "ls /tmp"
+    delay: 0.0
+    tags: ["fs", "quick"]
