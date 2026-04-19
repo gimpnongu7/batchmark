@@ -1,0 +1,22 @@
+# batchmark window analysis configuration example
+# Controls sliding-window statistics over command results.
+
+commands:
+  - echo hello
+  - sleep 0.05 && echo done
+  - python3 -c "import time; time.sleep(0.1)"
+  - echo fast
+  - ls /tmp
+  - date
+  - uname -a
+
+window:
+  # number of results per window slice
+  size: 4
+
+  # how many results to advance between windows
+  step: 1
+
+  # minimum fraction of window that must be filled to emit a slice
+  # e.g. 0.75 allows the last window to be 75% full
+  min_fill: 1.0
