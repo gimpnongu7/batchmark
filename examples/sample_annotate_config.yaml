@@ -1,0 +1,27 @@
+# Sample annotation config for batchmark
+# Annotations attach arbitrary key/value metadata to commands.
+# Use them to group, filter, or label results in reports.
+
+commands:
+  - echo hello
+  - sleep 1
+  - ls -la
+  - df -h
+
+annotations:
+  "echo hello":
+    team: infra
+    env: prod
+    owner: alice
+  "sleep 1":
+    team: dev
+    env: staging
+    owner: bob
+  "ls -la":
+    team: infra
+    env: prod
+    owner: alice
+  "df -h":
+    team: ops
+    env: prod
+    owner: carol
