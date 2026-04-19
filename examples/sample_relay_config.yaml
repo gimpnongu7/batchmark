@@ -1,0 +1,24 @@
+# sample_relay_config.yaml — example relay configuration for batchmark
+
+commands:
+  - echo hello
+  - echo world
+  - sleep 0.1
+
+relay:
+  # Target URL to POST results to
+  url: "http://localhost:9000/ingest"
+
+  # HTTP method (POST or PUT)
+  method: POST
+
+  # Request timeout in seconds
+  timeout: 5.0
+
+  # What to do when relay fails: warn | raise | ignore
+  on_failure: warn
+
+  # Optional custom headers
+  headers:
+    Content-Type: application/json
+    X-Source: batchmark
