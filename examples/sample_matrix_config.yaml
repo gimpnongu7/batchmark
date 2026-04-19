@@ -1,0 +1,19 @@
+# Sample matrix config for batchmark
+# Runs each command template for every combination of matrix variables.
+
+commands:
+  - "echo deploying {service} to {env}"
+  - "curl -s https://{env}.example.com/{service}/health"
+
+matrix:
+  service:
+    - api
+    - worker
+    - frontend
+  env:
+    - staging
+    - production
+
+timeout: 15.0
+
+# This will produce 2 commands x 3 services x 2 envs = 12 total runs
