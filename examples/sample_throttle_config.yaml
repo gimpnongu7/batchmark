@@ -1,0 +1,20 @@
+# sample_throttle_config.yaml
+# Demonstrates throttle settings for batchmark.
+
+commands:
+  - "curl -s https://example.com/api/health"
+  - "curl -s https://example.com/api/status"
+  - "curl -s https://example.com/api/metrics"
+  - "curl -s https://example.com/api/version"
+  - "curl -s https://example.com/api/ping"
+
+throttle:
+  # Wait 0.5 s between commands to avoid rate-limiting
+  inter_command_delay: 0.5
+  # Allow the first 2 commands to run back-to-back, then pause
+  burst: 2
+  # max_concurrency > 1 reserved for future parallel support
+  max_concurrency: 1
+
+timeout:
+  default: 10
