@@ -28,8 +28,23 @@ def _mean(values: List[float]) -> float:
 
 
 def sliding_windows(results: List[CommandResult], cfg: Optional[WindowConfig] = None) -> List[WindowSlice]:
+    """Generate sliding window slices over a list of CommandResults.
+
+    Args:
+        results: Ordered list of CommandResult objects to analyze.
+        cfg: Window configuration; defaults to WindowConfig() if not provided.
+
+    Returns:
+        List of WindowSlice objects, one per window position.
+    """
     if cfg is None:
         cfg = WindowConfig()
+    if cfg.size <= 0:
+        raise ValueError(f"WindowConfig.size must be positive, got {cfg.size}")
+    if cfg.step <= 0:
+        raise ValueError(f"WindowConfig.step must be positive, got {cfg.step}")
+    if not (0.0 <= cfg.min_fill <= 1.0):
+        raise ValueError(f"WindowConfig.min_fill must be between 0.0 and 1.0, got {cfg.min_fill}")
     slices = []
     n = len(results)
     min_count = max(1, int(cfg.size * cfg.min_fill))
