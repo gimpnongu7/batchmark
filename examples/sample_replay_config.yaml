@@ -1,0 +1,17 @@
+# Sample batchmark replay configuration
+# Replay controls which commands from a prior run are re-executed.
+
+commands:
+  - echo fast
+  - sleep 0.1 && echo medium
+  - exit 1
+
+replay:
+  # Re-run commands that returned a failure status
+  rerun_failed: true
+
+  # Re-run commands that timed out
+  rerun_timeout: true
+
+  # Maximum number of commands to replay (null = unlimited)
+  max_replays: 3
