@@ -31,6 +31,12 @@ def normalize_durations(
     if cfg is None:
         cfg = NormalizeConfig()
 
+    if cfg.method not in ("min-max", "z-score"):
+        raise ValueError(
+            f"Unknown normalization method {cfg.method!r}. "
+            "Expected 'min-max' or 'z-score'."
+        )
+
     durations = [r.duration for r in results]
     if not durations:
         return []
