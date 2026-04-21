@@ -1,0 +1,12 @@
+commands:
+  - "sleep 0.1"
+  - "sleep 0.2"
+  - "sleep 0.3"
+  - "sleep 0.5"
+  - "sleep 1.0"
+
+histogram:
+  bins: 8
+  min_duration: 0.0
+  max_duration: 1.2
+  bar_width: 30
