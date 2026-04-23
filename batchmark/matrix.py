@@ -53,6 +53,19 @@ def run_matrix(config: MatrixConfig) -> List[MatrixEntry]:
     return entries
 
 
+def filter_entries(entries: List[MatrixEntry], status: str) -> List[MatrixEntry]:
+    """Return only entries whose result status matches the given status string.
+
+    Args:
+        entries: List of MatrixEntry objects to filter.
+        status: Status string to match, e.g. ``"success"`` or ``"error"``.
+
+    Returns:
+        A new list containing only entries with the specified status.
+    """
+    return [e for e in entries if e.result.status == status]
+
+
 def format_matrix_table(entries: List[MatrixEntry]) -> str:
     lines = [f"{'COMMAND':<50} {'VARS':<30} {'STATUS':<10} {'DURATION':>10}"]
     lines.append("-" * 104)
