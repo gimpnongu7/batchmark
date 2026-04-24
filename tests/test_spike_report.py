@@ -23,6 +23,14 @@ def entries():
     return detect_spikes(base + [spike], cfg)
 
 
+@pytest.fixture
+def no_spike_entries():
+    """All results are uniform, so no spikes should be detected."""
+    base = [make_result(f"cmd{i}", 1.0) for i in range(6)]
+    cfg = SpikeConfig(threshold=2.0, min_samples=3, window=10)
+    return detect_spikes(base, cfg)
+
+
 def test_entry_to_dict_keys(entries):
     d = entry_to_dict(entries[0])
     assert set(d.keys()) == {"command", "duration", "status", "rolling_mean", "ratio", "is_spike"}
@@ -71,3 +79,16 @@ def test_spike_summary_counts(entries):
     summary = spike_summary(entries)
     assert "1/6" in summary
     assert "spike" in summary.lower()
+
+
+def test_spike_summary_no_spikes(no_spike_entries):
+    """spike_summary should report 0 spikes when none are detected."""
+    summary = spike_summary(no_spike_entries)
+    assert "0/" in summary
+    assert "spike" in summary.lower()
+
+
+def test_format_spike_table_no_yes_when_no_spikes(no_spike_entries):
+    """Table should not contain YES if there are no spikes."""
+    table = format_spike_table(no_spike_entries)
+    assert "YES" not in table
