@@ -27,6 +27,10 @@ class SplitResult:
     def group_names(self) -> List[str]:
         return list(self.groups.keys())
 
+    def summary(self) -> Dict[str, int]:
+        """Return a dict mapping each group name to the count of results in it."""
+        return {name: len(results) for name, results in self.groups.items()}
+
 
 def split_results(results: List[CommandResult], config: SplitConfig) -> SplitResult:
     """Assign each result to the first matching rule group, or default."""
@@ -53,7 +57,9 @@ def parse_split_config(raw: dict) -> SplitConfig:
     """
     rules = []
     for entry in raw.get("rules", []):
-        name = entry["name"]
+        name = entry.get("name")
+        if not name:
+            raise ValueError(f"Each split rule must have a 'name' field: {entry!r}")
         predicates: List[Callable[[CommandResult], bool]] = []
         if "status" in entry:
             s = entry["status"]
