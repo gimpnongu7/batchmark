@@ -1,0 +1,17 @@
+# batchmark smooth configuration example
+# Smoothing reduces noise in repeated benchmark runs by applying
+# a rolling average over duration values.
+
+smooth:
+  # Number of results to include in the rolling window.
+  # Larger values reduce noise but lag behind real changes.
+  window: 3
+
+  # If true, smoothing is applied independently per command.
+  # If false, smoothing is applied across all results in order.
+  per_command: true
+
+commands:
+  - echo hello
+  - sleep 0.1
+  - python -c "import time; time.sleep(0.05)"
