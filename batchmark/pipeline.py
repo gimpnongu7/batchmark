@@ -27,6 +27,11 @@ class PipelineResult:
     def total_duration(self) -> float:
         return sum(r.duration for r in self.results)
 
+    @property
+    def failed_commands(self) -> List[CommandResult]:
+        """Return only the results that had a non-zero exit code."""
+        return [r for r in self.results if r.exit_code != 0]
+
 
 def run_pipeline(
     stages: List[PipelineStage],
@@ -53,6 +58,21 @@ def run_pipeline(
             abort = True
 
     return pipeline_results
+
+
+def pipeline_summary(results: List[PipelineResult]) -> dict:
+    """Return a high-level summary dict for a completed pipeline run."""
+    total_stages = len(results)
+    passed = sum(1 for r in results if r.success)
+    skipped = sum(1 for r in results if r.skipped)
+    failed = total_stages - passed - skipped
+    return {
+        "total_stages": total_stages,
+        "passed": passed,
+        "failed": failed,
+        "skipped": skipped,
+        "total_duration": sum(r.total_duration for r in results),
+    }
 
 
 def parse_pipeline_config(raw: dict) -> List[PipelineStage]:
