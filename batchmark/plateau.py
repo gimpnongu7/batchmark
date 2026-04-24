@@ -40,6 +40,15 @@ def _group_by_command(results: List[CommandResult]) -> dict:
     return groups
 
 
+def all_plateaued(entries: List[PlateauEntry]) -> bool:
+    """Return True if every entry in the list has plateaued.
+
+    Useful for callers that want a single yes/no answer about whether the
+    entire batch of commands has stabilized.
+    """
+    return bool(entries) and all(e.plateaued for e in entries)
+
+
 def detect_plateau(
     results: List[CommandResult],
     config: Optional[PlateauConfig] = None,
