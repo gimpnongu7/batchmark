@@ -1,0 +1,20 @@
+# sample_stride_config.yaml
+# Demonstrates stride (step sampling) configuration for batchmark.
+
+commands:
+  - echo one
+  - echo two
+  - echo three
+  - echo four
+  - echo five
+  - echo six
+
+stride:
+  # Take every 2nd result from the batch output
+  step: 2
+
+  # Start sampling from index 0 (default)
+  offset: 0
+
+  # Optional: cap the total number of strided results returned
+  max_results: 3
