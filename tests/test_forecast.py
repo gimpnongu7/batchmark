@@ -82,3 +82,20 @@ def test_forecast_stable_trend():
     results = [make_result("cmd", 1.0) for _ in range(4)]
     entries = forecast(results, ForecastConfig())
     assert entries[0].trend == "stable"
+
+
+def test_forecast_empty_results():
+    """forecast() with no results should return an empty list."""
+    entries = forecast([], ForecastConfig())
+    assert entries == []
+
+
+def test_forecast_single_result():
+    """A single result should produce one entry with sample_count=1 and stable trend."""
+    results = [make_result("solo", 2.5)]
+    entries = forecast(results, ForecastConfig())
+    assert len(entries) == 1
+    assert entries[0].command == "solo"
+    assert entries[0].sample_count == 1
+    assert abs(entries[0].mean_duration - 2.5) < 0.001
+    assert entries[0].trend == "stable"
