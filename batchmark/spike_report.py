@@ -39,3 +39,12 @@ def spike_summary(entries: List[SpikeEntry]) -> str:
     total = len(entries)
     spikes = sum(1 for e in entries if e.is_spike)
     return f"Spike detection: {spikes}/{total} commands flagged as spikes."
+
+
+def filter_spikes(entries: List[SpikeEntry]) -> List[SpikeEntry]:
+    """Return only the entries that were flagged as spikes.
+
+    Useful when you want to report or inspect just the anomalous results
+    without iterating over the full entry list yourself.
+    """
+    return [e for e in entries if e.is_spike]
