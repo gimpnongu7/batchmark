@@ -1,0 +1,24 @@
+# batchmark burst configuration example
+# Controls how many commands can run within a sliding time window
+# before a cooldown pause is applied.
+
+commands:
+  - echo alpha
+  - echo beta
+  - echo gamma
+  - sleep 0.05
+  - echo delta
+  - echo epsilon
+
+burst:
+  # Width of the sliding window in seconds
+  window: 1.0
+
+  # Maximum number of commands allowed within the window before throttling
+  max_in_window: 3
+
+  # Seconds to sleep when the burst limit is exceeded
+  cooldown: 0.5
+
+  # Set to false to disable burst detection entirely
+  enabled: true
